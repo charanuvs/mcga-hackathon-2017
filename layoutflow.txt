@@ -1,0 +1,20 @@
+Init display,
+
+Make webservice call,
+	From response, parse out what nav links exist
+	Populate breadcrumb list with current display as a parent and the nav links as children. Each item should contain information about
+	NewTab, UseAsset, UseTimeRange
+	Add current display link w/ parameters to array keeping track of links
+
+When an arrow is clicked, make a new webservice call. Right before any new folder data is loaded, take the item from the current
+item, add it to the link array.
+
+Single clicking on a link should bring you to that link in the breadcrumb list.
+
+When loading a new display, check that the link array is filled and populate in the parents.
+
+Clicking a parent should make a new webservice call, every time the item is attempted to add to the link array,
+it should be checked if it already exists, if it does, everything after is deleted. Single clicking should bring you to that display.
+	This should handle upon loading as well
+
+
