@@ -5,9 +5,10 @@ window.PIVisualization = window.PIVisualization || {};
 (function (PV) {
     'use strict';
 
-    function init(scope, elem, $rootScope, routeParams, webServices, navHierarchy) {
+    function init(scope, elem, $rootScope, displayProvider, routeParams, webServices, navHierarchy) {
 
         scope.updateDisplayNavLinks = updateDisplayNavLinks;
+        scope.selectSymbol = selectSymbol;
         scope.linkData = null;
 
         $rootScope.$on('$stateChangeSuccess', updateDisplayNavLinks);
@@ -72,6 +73,10 @@ window.PIVisualization = window.PIVisualization || {};
                 };
             });
         }
+        
+        function selectSymbol(link) {
+            displayProvider.selectSymbol(link.SymbolName);
+        }
 
         return {};
     }
@@ -83,7 +88,7 @@ window.PIVisualization = window.PIVisualization || {};
             return {};
         },
         iconUrl: 'Images/chrome.custom_addin_crossed_tools.svg',
-        inject: ['$rootScope', 'routeParams', 'webServices', 'navHierarchy'],
+        inject: ['$rootScope', 'displayProvider', 'routeParams', 'webServices', 'navHierarchy'],
         init: init
     };
 
