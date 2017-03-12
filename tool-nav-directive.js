@@ -17,12 +17,14 @@ window.PIVisualization = window.PIVisualization || {};
 (function (PV) {
     'use strict';
 
-    function init(scope, elem, $rootScope, displayProvider, routeParams, webServices, navHierarchy) {
-
-        scope.updateDisplayNavLinks = updateDisplayNavLinks;
-        scope.selectSymbol = selectSymbol;
+    function init(scope, elem, $rootScope, displayProvider, navHierarchy, routeParams, webServices) {
+        // data
         scope.linkData = null;
+
+        // methods
         scope.navIntoItem = navIntoItem;
+        scope.selectSymbol = selectSymbol;
+        scope.updateDisplayNavLinks = updateDisplayNavLinks;
 
         $rootScope.$on('$stateChangeSuccess', updateDisplayNavLinks);
 
@@ -32,10 +34,12 @@ window.PIVisualization = window.PIVisualization || {};
 
         function navIntoItem(navItem, newTab) {
             if (navItem.IsChild && navItem.IsDisplay) {
-                // call display controller logic
                 displayProvider.selectSymbol(navItem.SymbolName);
+
                 var symbol = displayProvider.getLastSelectedSymbol();
                 var oldNewTab = symbol.Configuration.NewTab;
+
+                // expand symbol with our new tab setting and reset
                 symbol.Configuration.NewTab = newTab;
                 $rootScope.$broadcast('expandSymbol');
                 symbol.Configuration.NewTab = oldNewTab;
@@ -51,7 +55,7 @@ window.PIVisualization = window.PIVisualization || {};
             if (displayId > -1) {
                 webServices.getDisplayForEditing(displayId).then(
                     function (response) {
-                        navHierarchy.addParent({ LinkURL: './' + window.location.hash, DisplayName: response.data.Name});
+                        navHierarchy.addParent({ LinkURL: './' + window.location.hash, DisplayName: response.data.Name });
 
                         // get initial navigation links from current display
                         scope.linkData = {
@@ -60,7 +64,7 @@ window.PIVisualization = window.PIVisualization || {};
                             children: getNavLinks(response.data)
                         };
                     },
-                    function (errorObject) {
+                    function (error) {
                         // reset on error
                         reset(error);
                     }
@@ -86,16 +90,18 @@ window.PIVisualization = window.PIVisualization || {};
             var symbols = display.Symbols || [];
 
             return symbols.filter(function (symbol) {
-                // collect symbols wtih navigation links
+                // collect symbols with navigation links
                 return !!(symbol.Configuration && symbol.Configuration.LinkURL);
             }).map(function (symbol) {
                 // map the properties we care about
                 var config = symbol.Configuration,
                     isDisplay = config.LinkURL.indexOf('./#/Displays/') === 0,
                     displayUrlParts = isDisplay ? config.LinkURL.substring(13).split('/') : null;
+
                 var existsInParents = navHierarchy.parents.some(function(parent) {
                     return parent.LinkURL === config.LinkURL;                    
-                });   
+                });
+                
                 return {
                     DisplayName: isDisplay ? displayUrlParts[1] : config.LinkURL,
                     IncludeAsset: config.IncludeAsset,
@@ -123,7 +129,7 @@ window.PIVisualization = window.PIVisualization || {};
             return {};
         },
         iconUrl: 'Images/chrome.custom_addin_crossed_tools.svg',
-        inject: ['$rootScope', 'displayProvider', 'routeParams', 'webServices', 'navHierarchy'],
+        inject: ['$rootScope', 'displayProvider', 'navHierarchy', 'routeParams', 'webServices'],
         init: init
     };
 
