@@ -43,8 +43,7 @@ window.PIVisualization = window.PIVisualization || {};
                 symbol.Configuration.NewTab = newTab;
                 $rootScope.$broadcast('expandSymbol');
                 symbol.Configuration.NewTab = oldNewTab;
-            }
-            else {
+            } else {
                 // window.open here
                 window.open(navItem.LinkURL, navItem.IsChild ? '_blank': '_self');
             }
