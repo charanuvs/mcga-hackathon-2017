@@ -24,20 +24,19 @@ window.PIVisualization = window.PIVisualization || {};
         var vm = this;        
         vm.parents = [];
 
-        vm.addParent = function(navItem) {            
-            var navIndex;
-            var index;
-            for (index = 0; index < vm.parents.length; index += 1) {
+        vm.addParent = function (navItem) {            
+            var navIndex = -1;
+            
+            for (var index = 0; index < vm.parents.length; index += 1) {
                 if (vm.parents[index].LinkURL === navItem.LinkURL) {
                     navIndex = index;
                     break;
                 }
             }         
 
-            if (navIndex !== undefined) {
+            if (navIndex !== -1) {
                 vm.parents.splice(navIndex + 1);
-            }
-            else {
+            } else {
                 vm.parents.push(navItem);
             }
         }
