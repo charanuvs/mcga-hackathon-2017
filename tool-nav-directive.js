@@ -10,6 +10,7 @@ window.PIVisualization = window.PIVisualization || {};
         scope.updateDisplayNavLinks = updateDisplayNavLinks;
         scope.selectSymbol = selectSymbol;
         scope.linkData = null;
+        scope.navIntoItem = navIntoItem;
 
         $rootScope.$on('$stateChangeSuccess', updateDisplayNavLinks);
 
@@ -17,13 +18,29 @@ window.PIVisualization = window.PIVisualization || {};
             updateDisplayNavLinks();         
         })();
 
-
+        function navIntoItem(navItem, newTab) {
+            if (navItem.IsChild && navItem.IsDisplay) {
+                // call display controller logic
+                displayProvider.selectSymbol(navItem.SymbolName);
+                var symbol = displayProvider.getLastSelectedSymbol();
+                var oldNewTab = symbol.Configuration.NewTab;
+                symbol.Configuration.NewTab = newTab;
+                $rootScope.$broadcast('expandSymbol');
+                symbol.Configuration.NewTab = oldNewTab;
+            }
+            else {
+                // window.open here
+                window.open(navItem.LinkURL, navItem.IsChild ? '_blank': '_self');
+            }
+        }
+        
         function updateDisplayNavLinks(navItem) {
-            var displayId = (navItem && navItem.DisplayId) || routeParams.getDisplayId();
+            var displayId = routeParams.getDisplayId();
             if (displayId > -1) {
-                navHierarchy.addParent(navItem && navItem.LinkURL && navItem);
                 webServices.getDisplayForEditing(displayId).then(
                     function (response) {
+                        navHierarchy.addParent({ LinkURL: './' + window.location.hash, DisplayName: response.data.Name});
+
                         // get initial navigation links from current display
                         scope.linkData = {
                             parents: navHierarchy.parents,
@@ -33,7 +50,7 @@ window.PIVisualization = window.PIVisualization || {};
                     },
                     function (errorObject) {
                         // reset on error
-                        reset();
+                        reset(error);
                     }
                 );
             } else {
@@ -41,9 +58,16 @@ window.PIVisualization = window.PIVisualization || {};
             }
         }
 
-        function reset() {
+        function reset(error) {
             navHierarchy.parents.length = 0;
-            scope.linkData = null;
+            scope.linkData = {
+                parents: [],
+                children: error ? [{
+                    DisplayName: 'Error loading data',
+                    IsDisabled: true
+                }] : [],
+                parent: null
+            };
         }
 
         function getNavLinks(display) {
@@ -61,19 +85,18 @@ window.PIVisualization = window.PIVisualization || {};
                     return parent.LinkURL === config.LinkURL;                    
                 });   
                 return {
-                    DisplayId: isDisplay ? displayUrlParts[0] : null,
                     DisplayName: isDisplay ? displayUrlParts[1] : config.LinkURL,
                     IncludeAsset: config.IncludeAsset,
                     IncludeTimeRange: config.IncludeTimeRange,
-                    IsDisplay: isDisplay,
                     LinkURL: config.LinkURL,
-                    NewTab: config.NewTab,
                     SymbolName: symbol.Name,
-                    IsDisabled: !isDisplay || existsInParents
+                    IsDisabled: !isDisplay || existsInParents,
+                    IsDisplay: isDisplay,
+                    IsChild: true
                 };
             });
         }
-        
+
         function selectSymbol(link) {
             displayProvider.selectSymbol(link.SymbolName);
         }

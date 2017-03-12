@@ -10,18 +10,7 @@
         var vm = this;        
         vm.parents = [];
 
-        vm.addParent = function(navItem) {
-            var linkURL = './' + window.location.hash;
-            var displayUrlParts = linkURL.substring(13).split('/');
-            navItem = navItem || {
-                DisplayId: displayUrlParts[0],
-                DisplayName: displayUrlParts[1],
-                IsDisplay: true,
-                LinkURL: linkURL,                    
-                CanNav: true,
-                IsDisabled: false
-            };
-
+        vm.addParent = function(navItem) {            
             var navIndex;
             var index;
             for (index = 0; index < vm.parents.length; index += 1) {

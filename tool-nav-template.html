@@ -1,17 +1,15 @@
-<div class="flex-container-column" style="height: 100%">
+<div class="flex-container-column nav-tool-tab" style="height: 100%">
     <div class="c-pane-header t-pane-header-color t-content-font-large t-font-color-white flex-none">Navigation Links</div>
 
     <div class="k-content t-side-panel-bgcolor scroll flex-auto">
-        <breadcrumblist list-data="linkData" get-children="updateDisplayNavLinks" selected="selectSymbol" mouse-over="selectSymbol"
+        <breadcrumblist list-data="linkData" get-children="navIntoItem" selected="selectSymbol" mouse-over="selectSymbol"
                     item-name-prop="DisplayName" disabled-prop="IsDisabled" busy="true"
                     current-page-label="Page" total-pages-label="of {0}"
                     max-parents-to-show="4" ng-cloak>
 
             <div style="height: 19px; line-height: 19px; padding-left: 5px;" class="item-name" title="{{::item.LinkURL}}">
-                <span class="subhead-text-fill" ng-bind="::item.DisplayName"></span>
+                <span class="subhead-text-fill" ng-style="{'color' : item.hover ? 'blue' : ''}" ng-mouseenter="item.hover = true;" ng-mouseleave="item.hover = false;" ng-click="getChildren(item, true)" ng-bind="::item.DisplayName"></span>
             </div>
         </breadcrumblist>
-    </div>
-
-    
+    </div>    
 </div>
