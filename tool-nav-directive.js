@@ -49,7 +49,7 @@ window.PIVisualization = window.PIVisualization || {};
             }
         }
         
-        function updateDisplayNavLinks(navItem) {
+        function updateDisplayNavLinks() {
             var displayId = routeParams.getDisplayId();
             if (displayId > -1) {
                 webServices.getDisplayForEditing(displayId).then(
