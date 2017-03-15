@@ -9,11 +9,11 @@ This tool tab extension can be shown on an existing Coresight installation by co
 
 <h2>Functionality</h2>
 Users can interact with the tool pane in the following ways:
-+ Click on the link name – This action opens the link in a new tab
-	- All non-display links will only be clickable on their display name and will all open in a new tab regardless of the link's setting for "Open in new tab"
-+ Drill-in by clicking the arrow – This action opens the linked display in the same window
-	- Only Coresight displays have the option of opening in the same window, clicking the arrow will open in the same window regardless of the link's setting for "Open in new tab"
-	- When opening a link for a Coresight display, the link that is opened does utilize the original link's options for including asset context and time context when navigating. In order to better visualize the asset context being passed, when hovering over a link item in the tool tab, the associated symbol is also selected
+* Click on the link name – This action opens the link in a new tab
+..* All non-display links will only be clickable on their display name and will all open in a new tab regardless of the link's setting for "Open in new tab"
+* Drill-in by clicking the arrow – This action opens the linked display in the same window
+..* Only Coresight displays have the option of opening in the same window, clicking the arrow will open in the same window regardless of the link's setting for "Open in new tab"
+..* When opening a link for a Coresight display, the link that is opened does utilize the original link's options for including asset context and time context when navigating. In order to better visualize the asset context being passed, when hovering over a link item in the tool tab, the associated symbol is also selected
 
 As a user drills down into sub-displays, the tab keeps track of what displays you've visited in a hierarchy format. Clicking any of the parents in the hierarchy will bring you back to that display. The hierarchy will also be created when navigating to display links entered in the URL bar.
 
