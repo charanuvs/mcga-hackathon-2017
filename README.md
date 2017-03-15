@@ -9,7 +9,7 @@ This tool tab extension can be shown on an existing Coresight installation by co
 
 <h2>Functionality</h2>
 Users can interact with the tool pane in the following ways:
--	Click on the link name – This action opens the link in a new tab
+- Click on the link name – This action opens the link in a new tab
 	- All non-display links will only be clickable on their display name and will all open in a new tab regardless of the link's setting for "Open in new tab"
 - Drill-in by clicking the arrow – This action opens the linked display in the same window
 	- Only Coresight displays have the option of opening in the same window, clicking the arrow will open in the same window regardless of the link's setting for "Open in new tab"
